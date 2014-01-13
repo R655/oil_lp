@@ -60,8 +60,10 @@ namespace OilPlanCalculation
             if (oilLp.findSolution())
             {
                 int i = 0;
+                dataGridView1.Rows.Clear();
                 foreach (var item in oilLp.output.tools)
                 {
+
                     dataGridView1.Rows.Add();
                     dataGridView1.Rows[i].Cells[0].Value = item.name;
                     dataGridView1.Rows[i].Cells[1].Value = item.maxPower;
