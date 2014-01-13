@@ -165,11 +165,11 @@
             0,
             0});
             // 
-            // button1
+            // findSolution
             // 
             this.findSolution.Enabled = false;
             this.findSolution.Location = new System.Drawing.Point(389, 27);
-            this.findSolution.Name = "button1";
+            this.findSolution.Name = "findSolution";
             this.findSolution.Size = new System.Drawing.Size(110, 23);
             this.findSolution.TabIndex = 3;
             this.findSolution.Text = "Рассчитать";
@@ -208,6 +208,7 @@
             // 
             // showSolutionDetails
             // 
+            this.showSolutionDetails.Enabled = false;
             this.showSolutionDetails.Location = new System.Drawing.Point(290, 350);
             this.showSolutionDetails.Name = "showSolutionDetails";
             this.showSolutionDetails.Size = new System.Drawing.Size(213, 23);

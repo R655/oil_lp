@@ -68,6 +68,11 @@ namespace OilPlanCalculation
                     dataGridView1.Rows[i].Cells[2].Value = formatFloatValue(item.recPower);
                     ++i;
                 }
+                showSolutionDetails.Enabled = true;
+            }
+            else
+            {
+                showSolutionDetails.Enabled = false;
             }
 
         }

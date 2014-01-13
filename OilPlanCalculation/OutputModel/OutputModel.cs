@@ -67,47 +67,45 @@ namespace OilPlanCalculation
                     Tool tool = tools[tooli];
 
                     /* Получено добра с установки */
-                    try
+                    var tog =
+                        db.Select(@"select 
+                            ReceiveNumber
+                        from 
+                            GoodFromTool 
+                        where 
+                            ToolId = {0}
+                            AND GoodId = {1}",
+                            tool.id, good.id);
+                    if (tog.Count > 0)
                     {
-                        DataRow tog =
-                            db.Select(@"select 
-                                ReceiveNumber
-                            from 
-                                GoodFromTool 
-                            where 
-                                ToolId = {0}
-                                AND GoodId = {1}",
-                                tool.id, good.id)[0];
-
-                        double outGood = tool.recPower * (double)tog["ReceiveNumber"];
+                        double outGood = tool.recPower * (double)tog[0]["ReceiveNumber"];
 
                         tool.revenue += good.price * outGood;
                         good.createdByTool[tooli] = outGood;
                         good.created += outGood;
                     }
-                    catch (IndexOutOfRangeException e)
+                    else
                     {
                         good.createdByTool[tooli] = 0;
                     }
 
                     /* Потребность установки в продукции */
-                    try
+                    var tig =
+                        db.Select(@"select 
+                            RequestNumber 
+                        from 
+                            NeedGoodForTool 
+                        where 
+                            ToolId = {0}
+                            AND GoodId = {1}",
+                                tool.id, good.id);
+                    if(tig.Count > 0)
                     {
-                        DataRow tig =
-                           db.Select(@"select 
-                                RequestNumber 
-                            from 
-                                NeedGoodForTool 
-                            where 
-                                ToolId = {0}
-                                AND GoodId = {1}",
-                                    tool.id, good.id)[0];
-
-                        double need = tool.recPower * (double)tig["RequestNumber"];
+                        double need = tool.recPower * (double)tig[0]["RequestNumber"];
                         good.usedByTool[tooli] = need;
                         good.used += need;
                     }
-                    catch(IndexOutOfRangeException e)
+                    else
                     {
                         good.usedByTool[tooli] = 0;
                     }
@@ -158,22 +156,22 @@ namespace OilPlanCalculation
                     Tool tool = tools[tooli];
 
                     /* Потребность установки в ресурсах */
-                    try{
-                        DataRow  tir = 
-                            db.Select(@"select 
-                                     RequestNumber 
-                                   from 
-                                    NeedResourceForTool
-                                   where 
-                                    ToolId = {0}
-                                    AND ResourceId = {1}",
-                                    tool.id, res.id)[0];
-
-                        Double need = tool.recPower * (double)tir["RequestNumber"];
+                    var tir = 
+                        db.Select(@"select 
+                                    RequestNumber 
+                                from 
+                                NeedResourceForTool
+                                where 
+                                ToolId = {0}
+                                AND ResourceId = {1}",
+                                tool.id, res.id);
+                    if(tir.Count > 0)
+                    {
+                        Double need = tool.recPower * (double)tir[0]["RequestNumber"];
 
                         res.usedByTools[tooli] = need;
                     }
-                    catch (IndexOutOfRangeException e)
+                    else
                     {
                         res.usedByTools[tooli] = 0;
                     }
