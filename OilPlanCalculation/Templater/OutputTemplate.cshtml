@@ -1,0 +1,146 @@
+﻿<!DOCTYPE html>
+@{
+    // Формат вывода дробных чисел
+    FloatFormat = "{0:G5}"; // Задан вывод минимальной длины с 5-ю значащами знаками
+
+    // Минимальное дробное число
+    Zero = 1.0E-10; 
+        
+}
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Оптимальный план производства</title>
+</head>
+<body>
+    
+    <h1>Оптимальный план производства товарной продукции</h1>
+    <table border ="1">
+        <tr>
+            <th>Ид</th>
+            <th>Название</th>
+            <th>Цена</th>
+            <th>Объем</th>
+            <th>Стоимость</th>
+        </tr>
+        @foreach (var good in Model.goods)
+        {
+        <tr>
+            <td>@good.id</td>
+            <td>@good.name</td>
+            <td>@good.price</td>
+            <td>@good.volume</td>
+            <td>@good.cost</td>
+        </tr>
+        }
+        <tr>
+            <td colspan ="4">
+                Сумма
+            </td>
+            <td>
+                @Model.goodsCostSumm
+            </td>
+        </tr>
+    </table>
+
+    <br />
+    <h1>Установки</h1>
+    <table border ="1">
+        <tr>
+            <th colspan ="2">Название</th>
+            <th>Мощность</th>
+            <th>Загрузка</th>
+            <th>Доход</th>
+            <th>Относительный доход</th>
+        </tr>
+        @foreach (var tool in Model.tools)
+        {
+        <tr>
+            <td>@tool.name</td>
+            <td>@tool.abbr</td>
+            <td>@tool.maxPower</td>
+            <td>@tool.recPower</td>
+            <td>@tool.revenue</td>
+            <td>@tool.relativeRevenue</td>
+        </tr>
+        }
+    </table>
+
+    <br />
+    <h1>Материальный баланс по продукции</h1>
+    <table border ="1">
+        <tr>
+            <th rowspan ="2">Продукция</th>
+            @for (int tooli = 0; tooli < Model.tools.Length; ++tooli)
+            {
+            <th colspan ="2">@Model.tools[tooli].abbr</th>
+            }
+            <th colspan ="3">Всего</th>
+        </tr>
+
+        <tr>
+            @for (int tooli = 0; tooli < Model.tools.Length; ++tooli)
+            {
+            <th>Создано</th>
+            <th>Использовано</th>
+            }
+            <th>Создано</th>
+            <th>Использовано</th>
+            <th>Осталось</th>
+        </tr>
+
+        @foreach (var good in Model.goods)
+        {
+        <tr>
+            <td>@good.name</td>
+            @for (int tooli = 0; tooli < Model.tools.Length; ++tooli)
+            {
+            <td>@good.createdByTool[tooli]</td>
+            <td>@good.usedByTool[tooli]</td>
+            }
+            <td>@good.created</td>
+            <td>@good.used</td>
+            <td>@good.volume</td>
+        </tr>
+        }
+    </table>
+
+     <br />
+    <h1>Потребность в ресурсах</h1>
+    <table border ="1">
+        <tr>
+            <th>Ресурс</th>
+            @for (int tooli = 0; tooli < Model.tools.Length; ++tooli)
+            {
+            <th>@Model.tools[tooli].abbr</th>
+            }
+            <th>Требуется всего</th>
+            <th>Начальное количество</th>
+            <th>Требуется закупить</th>
+            <th>Остаток</th>
+        </tr>
+        @foreach (var resource in Model.resources)
+        {
+        <tr>
+            <td>@resource.name</td>
+            @for (int tooli = 0; tooli < Model.tools.Length; ++tooli)
+            {
+            <td>
+            @resource.usedByTools[tooli]
+            </td>
+            }
+            <td>@resource.used</td>
+            <td>@resource.stock</td>
+            <td>@resource.purchased</td>
+            <td>@resource.notused</td>
+        </tr>
+        }
+    </table>
+
+    <br />
+    Итоги:
+    <ol>
+        <li></li>
+    </ol>
+</body>
+</html>
