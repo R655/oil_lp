@@ -154,6 +154,22 @@ CREATE TABLE ResourceNumber (
     ON UPDATE CASCADE
     ON DELETE RESTRICT
 );
+INSERT INTO "ResourceNumber" VALUES(15, 1);/*'Аммиак, кг');*/
+INSERT INTO "ResourceNumber" VALUES(4,30000);/*'Вода, м^3');*/
+INSERT INTO "ResourceNumber" VALUES(8,1);/*'Деэмульгатор, кг');*/
+INSERT INTO "ResourceNumber" VALUES(14,1);/*'Диэтиленгликоль, кг');*/
+INSERT INTO "ResourceNumber" VALUES(9,1);/*'Известь комовая кальценированая негашённая, кг');*/
+INSERT INTO "ResourceNumber" VALUES(12,4);/*'Инертный газ, кг');*/
+INSERT INTO "ResourceNumber" VALUES(11,0.1);/*'Катализатор АП-64, кг');*/
+INSERT INTO "ResourceNumber" VALUES(10,1);/*'Катализатор, кг');*/
+INSERT INTO "ResourceNumber" VALUES(13,0.1);/*'Моноэтаноламин, кг');*/
+INSERT INTO "ResourceNumber" VALUES(1,17);/*'Нефть, т');*/
+INSERT INTO "ResourceNumber" VALUES(3,1);/*'Пар, Гкал');*/
+INSERT INTO "ResourceNumber" VALUES(6,100);/*'Сжатый воздух, м^3');*/
+INSERT INTO "ResourceNumber" VALUES(2,1);/*'Сода каустическая, кг');*/
+INSERT INTO "ResourceNumber" VALUES(7,600);/*'Топливо, кг');*/
+INSERT INTO "ResourceNumber" VALUES(5,200);/*'Электроэнергия, кВт*ч');*/
+
 DROP TABLE IF EXISTS "Tool";
 CREATE TABLE Tool (
   Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,

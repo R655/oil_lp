@@ -68,7 +68,7 @@ namespace OilPlanCalculation
 
                     /* Получено добра с установки */
                     var tog =
-                        db.Select(@"select 
+                        db.q(@"select 
                             ReceiveNumber
                         from 
                             GoodFromTool 
@@ -91,7 +91,7 @@ namespace OilPlanCalculation
 
                     /* Потребность установки в продукции */
                     var tig =
-                        db.Select(@"select 
+                        db.q(@"select 
                             RequestNumber 
                         from 
                             NeedGoodForTool 
@@ -126,7 +126,7 @@ namespace OilPlanCalculation
             {
                 var r = db.resources[i];
 
-                var stockRaw = db.Select("select * from ResourceNumber as rn where rn.ResourceID = {0}", r["Id"]);
+                var stockRaw = db.q("select * from ResourceNumber as rn where rn.ResourceID = {0}", r["Id"]);
                 double stock = 0;
                 if (stockRaw.Count > 1)
                     throw new Exception("Чтото не так с таблицей ResourceNumber");
@@ -157,7 +157,7 @@ namespace OilPlanCalculation
 
                     /* Потребность установки в ресурсах */
                     var tir = 
-                        db.Select(@"select 
+                        db.q(@"select 
                                     RequestNumber 
                                 from 
                                 NeedResourceForTool
