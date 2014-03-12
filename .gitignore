@@ -12,6 +12,11 @@ nbdist/
 nbactions.xml
 nb-configuration.xml
 
+# Project files
+
+/out*.html  
+/general.html
+
 # KDE
 .directory
 
