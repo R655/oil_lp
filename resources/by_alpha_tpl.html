@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Оптимальный план производства</title>
+</head>
+<body>
+    #if($model.showAlpha)
+    <h2>Стохастическая задача: &alpha; = $f.rate($model.alpha)</h2>
+    #else
+    <h2>Детерминированная задача.</h2>
+    #end
+    <dl>
+        <dt>
+            <h1>Оптимальный план производства товарной продукции</h1>
+        </dt>
+        <dd>
+            <table border ="1">
+                <tr>
+                    <th>Ид</th>
+                    <th>Название</th>
+                    <th>Цена</th>
+                    <th>Объем</th>
+                    <th>Стоимость</th>
+                </tr>
+                #foreach($good in $model.goods)
+                <tr>
+                    <td>$good.id</td>
+                    <th>$good.name</th>
+                    <td>$f.price($good.price)</td>
+                    <td>$f.value($good.volume)</td>
+                    <td>$f.price($good.cost)</td>
+                </tr>
+                #end
+                <tr>
+                    <td colspan ="4">
+                        Сумма
+                    </td>
+                    <td>
+                        $f.price($model.goodsCostSumm)
+                    </td>
+                </tr>
+            </table>
+        </dd>
+    </dl>
+    <dl>
+        <dt>
+            <h1>Установки</h1>
+        </dt>
+        <dd>
+            <table border ="1">
+                <tr>
+                    <th colspan ="2">Название</th>
+                    <th>Мощность</th>
+                    <th>Загрузка</th>
+                    <th>Доход</th>
+                    <th>Относительный доход</th>
+                </tr>
+                #foreach ($tool in $model.tools)
+                <tr>
+                    <th>$tool.name</th>
+                    <td>$tool.abbr</td>
+                    <td>$f.value($tool.maxPower)</td>
+                    <td>$f.value($tool.recPower)</td>
+                    <td>$f.price($tool.revenue)</td>
+                    <td>$f.percent($tool.relativeRevenue)</td>
+                </tr>
+                #end
+            </table>
+        </dd>
+    </dl>
+    <dl>
+        <dt>
+            <h1>Материальный баланс по продукции</h1>
+        </dt>
+        <dd>
+            <table border ="1">
+                <tr>
+                    <th rowspan ="2">Продукция</th>
+                    #foreach ($tooli in $model.tools)
+                    <th colspan ="2">$tooli.abbr</th>
+                    #end
+                    <th colspan ="3">Всего</th>
+                </tr>
+
+                <tr>
+                    #foreach ($tooli in $model.tools)
+                    <th>Создано</th>
+                    <th>Использовано</th>
+                    #end
+                    <th>Создано</th>
+                    <th>Использовано</th>
+                    <th>Осталось</th>
+                </tr>
+
+                #foreach ($good in $model.goods)
+                <tr>
+                    <th>$good.name</th>
+                    #foreach ($tooli in $model.tools)
+                    <td>$f.value($good.createdByTool.get($tooli.id))</td>
+                    <td>$f.value($good.usedByTool.get($tooli.id))</td>
+                    #end
+                    <td>$f.value($good.created)</td>
+                    <td>$f.value($good.used)</td>
+                    <td>$f.value($good.volume)</td>
+                </tr>
+                #end
+            </table>
+        </dd>
+    </dl>
+    <dl>
+        <dt>
+            <h1>Потребность в ресурсах</h1>
+        </dt>
+        <dd>
+            <table border ="1">
+                <tr>
+                    <th>Ресурс</th>
+                    #foreach ($tooli in $model.tools)
+                    <th>$tooli.abbr</th>
+                    #end
+                    <th>Требуется всего</th>
+                    <th>Ограничение</th>
+                </tr>
+                #foreach ($resource in $model.resources)
+                <tr>
+                    <th>$resource.name</th>
+                    #foreach ($tooli in $model.tools)
+                    <td>
+                    $f.value($resource.usedByTools[$tooli.id])
+                    </td>
+                    #end
+                    
+                    <td>$f.value($resource.used)</td>
+                    <td>$f.value($resource.stock)</td>
+                </tr>
+                #end
+            </table>
+        </dd>
+    </dl>
+    <dl>
+        <dt>
+            <h1>Обобщенные технико-экономические показатели:<h2>
+        </dt>
+        <dd>
+            <ol>
+                <li>
+                    <dt>Объём переработки нефти</dt>
+                    <dd>$f.value($model.oilRefinery)</dd>
+                </li>
+                <li>
+                    <dt>Прибыль</dt>
+                    <dd>$f.price($model.profit)</dd>
+                </li>
+                <li>
+                    <dt>Доход</dt>
+                    <dd>$f.price($model.goodsCostSumm)</dd>
+                </li>
+                <li>
+                    <dt>Затраты</dt>
+                    <dd>$f.price($model.resourcesCostSumm)</dd>
+                </li>
+            </ol>
+        </dd>
+    </dl>
+</body>
+</html>

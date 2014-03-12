@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Оптимальный план производства</title>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+  
+
+        
+        
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(charts);
+      function charts()
+      {
+          drawChart();
+          drawChart2();
+      }
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            [
+                "Good",
+          #foreach($mod in $model)
+          
+            #if($mod.showAlpha)
+                "$mod.alpha",
+            #end
+          
+         #end
+         ],
+         #set($i = 0)
+         #foreach($good in $model[0].goods)
+            #if($good.price != 0.0)
+            [
+                "$good.id",
+            #foreach($mod in $model)
+                #if($mod.showAlpha)
+                    #set($val = $mod.goods[$i].volume - $model[0].goods[$i].volume)
+                    #set($lol = 100*$val/$model[0].goods[$i].volume)
+                    $lol,
+                #end
+            #end
+            ],
+            #end
+            #set($i = $i + 1)
+         #end
+        ]);
+
+        var options = {
+          title: 'Изменение объемов производства продуции относительно детерминированной задачи',
+          hAxis: {title: 'Продукция', titleTextStyle: {color: 'red'}}
+        };
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+        
+    function drawChart2() {
+        var data = google.visualization.arrayToDataTable([
+            [
+                "alpha",
+                "cash"
+            ],
+         #foreach($mod in $model)
+            [
+                "$mod.alpha",
+                $mod.goodsCostSumm
+            ],
+         #end
+        ]);
+
+        var options = {
+          title: 'Company Performance'
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('chart2_div'));
+        chart.draw(data, options);
+        
+      }
+    </script>
+
+</head>
+<body>
+    
+
+    <dl>
+        <dt>
+            <h1>Оптимальный план производства товарной продукции</h1>
+        </dt>
+        <dd>
+            <table border ="1">
+                <tr>
+                    <th>Ид</th>
+                    <th>Название</th>
+                    <th>Цена</th>
+                </tr>
+                #foreach($good in $model[0].goods)
+                <tr>
+                    <td>$good.id</td>
+                    <td>$good.name</td>
+                    <td>$f.price($good.price)</td>
+                </tr>
+                #end
+            </table>
+        </dd>
+    </dl>
+    
+    
+    <dl>
+        <dt>
+            <h1>Объемы производства продукции при различных уровнях вероятности</h1>
+        </dt>
+        <dd>
+            <table border ="1">
+                <tr>
+                    <th>&alpha;</th>
+                    #foreach($good in $model[0].goods)
+                    <th>X$good.id</th>
+                    #end
+                </tr>
+                #foreach($mod in $model)
+                <tr>
+                    <td>
+                    #if($mod.showAlpha)
+                        $f.rate($mod.alpha)
+                    #else
+                        det
+                    #end
+                    </td>
+                    #foreach($good in $mod.goods)
+                    <td>$f.value($good.volume)</td>
+                    #end
+                </tr>
+                #end
+            </table>
+        </dd>
+    </dl>
+    <div id="chart_div" style="width: 900px; height: 500px;"></div>
+    <div id="chart2_div" style="width: 900px; height: 500px;"></div>
+    
+    <dl>
+        <dt><h1>Относительное увеличение ресурса при разных уровнях вероятности</h1></dt>
+        <dd>
+            <table  border ="1">
+                <tr>
+                    <th rowspan="2">
+                        Ресурс
+                    </th>
+                    <th rowspan="2">
+                        Мат. ожидание
+                        
+                    </th>
+                    <th colspan="$model.size()">
+                        Значения
+                    </th>
+                </tr>
+                <tr>
+                    #foreach($mod om $model)
+                    <th>
+                        #if($mod.showAlpha)
+                            $f.rate($mod.alpha)
+                        #else
+                            det
+                        #end
+                    </th>
+                    #end
+                </tr>
+                #set( $ri=0)
+                #foreach($resource in $model[0].resources)
+                <tr>
+                    <th>$resource.name</th>
+                    <td>$f.value($resource.used)</td>
+                    #foreach($mod om $model)
+                    <td>
+                        #if($mod.showAlpha)
+                            $f.percent($mod.resources[$ri].gamma)
+                        #else
+                            det
+                        #end
+                    </td>
+                    #end
+                </tr>
+                    #set( $ri=$ri+1)
+                #end
+                
+            </table>
+        </dd>
+    </dl>
+    
+    
+    <dl>
+        <dt><h1>Прибыль</h1></dt>
+        <dd>
+            <table border ="1">
+                <tr>
+                    <th>
+                        Показатель
+                    </td>
+                    #foreach($mod in $model)
+                        <th>
+                        #if($mod.showAlpha)
+                            $f.rate($mod.alpha)
+                        #else
+                            det
+                        #end
+                        </th>
+                   #end
+                </tr>
+                <tr>
+                    <td>
+                        Доход
+                    </td>
+                    #foreach($mod in $model)
+                        <td>
+                            $f.price($mod.goodsCostSumm )
+                        </td>
+                   #end
+                </tr>
+                <tr>
+                    <td>
+                        Затраты
+                    </td>
+                    #foreach($mod in $model)
+                        <td>
+                            $f.price($mod.resourcesCostSumm )
+                        </td>
+                   #end
+                </tr>
+
+                <tr>
+                    <td>
+                        Прибыль
+                    </td>
+                    #foreach($mod in $model)
+                        <td>
+                            $f.price($mod.profit)
+                        </td>
+                   #end
+                </tr>
+
+                <tr>
+                    <td>
+                        &Beta;
+                    </td>
+                    #foreach($mod in $model)
+                        <td>
+                        #if($mod.showAlpha)
+                            #set($val = ($model[0].profit - $mod.profit)/$model[0].profit)
+                            $f.percent($val)
+                        #else
+                            det
+                        #end
+                        </td>
+                     #end
+                </tr>
+
+            </table>
+        </dd>
+    </dl>
+</body>
+</html>
