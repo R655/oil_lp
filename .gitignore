@@ -17,7 +17,7 @@ nb-configuration.xml
 /out*.html  
 /general.html
 *.sqlite
-*.sqlite.bk*
+*.bk*
 
 # KDE
 .directory
