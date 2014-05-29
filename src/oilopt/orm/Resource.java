@@ -27,32 +27,22 @@ public class Resource {
     @DatabaseField(columnName = "Price", canBeNull = false, dataType = DataType.BIG_DECIMAL)
     private BigDecimal price;
     
-    @ForeignCollectionField(foreignFieldName = "resource", columnName = "ResourceId")
-    private ForeignCollection<ResourceNumber> number;
+    @DatabaseField(columnName = "TotalNumber", dataType = DataType.DOUBLE, canBeNull = false)
+    private double totalNumber;
+    @DatabaseField(columnName = "Deviation", dataType = DataType.DOUBLE, canBeNull = false)
+    private double deviation;
     
     @ForeignCollectionField(foreignFieldName = "resource", columnName = "ResourceId")
     private ForeignCollection<NeedResourceForTool> needResourceForTool;
     
     public double getNumber()
     {
-        double resourceNumber = 0;
-        for(ResourceNumber rn : number)
-        {
-            resourceNumber = rn.getTotalNumber();
-            break; // ибо связь один к одному
-        }
-        return resourceNumber;
+        return totalNumber;
     }
     
     public double getNumberDeviation()
     {
-        double resourceNumberVariance = 0;
-        for(ResourceNumber rn : number)
-        {
-            resourceNumberVariance = rn.getDeviation();
-            break; // ибо связь один к одному
-        }
-        return resourceNumberVariance;
+        return deviation;
     }
     
     public void setId(int id) {

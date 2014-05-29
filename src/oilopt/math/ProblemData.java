@@ -28,7 +28,6 @@ public class ProblemData
     public List<NeedGoodForTool> goodRequirments = null;
     public List<GoodFromTool> goodReceivers = null;
     public List<NeedResourceForTool> resourceRequirments = null;
-    public List<ResourceNumber> resourceNumbers = null;
     
     /*
      Соответсвие ключей БД индексам задачи оптимизации
@@ -53,7 +52,6 @@ public class ProblemData
         Dao<NeedGoodForTool, String> ngftDao = DaoManager.createDao(source, NeedGoodForTool.class);
         Dao<GoodFromTool, String> gftDao = DaoManager.createDao(source, GoodFromTool.class);
         Dao<NeedResourceForTool, String> nrftDao = DaoManager.createDao(source, NeedResourceForTool.class);
-        Dao<ResourceNumber, String> rnumDao = DaoManager.createDao(source, ResourceNumber.class);
         
         resources = resourceDao.queryForAll();
         goods = goodDao.queryForAll();
@@ -61,7 +59,6 @@ public class ProblemData
         goodRequirments = ngftDao.queryForAll();
         goodReceivers = gftDao.queryForAll();
         resourceRequirments = nrftDao.queryForAll();
-        resourceNumbers = rnumDao.queryForAll();
         
         initProblemIndicies();
     }

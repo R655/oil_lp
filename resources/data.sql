@@ -131,48 +131,25 @@ DROP TABLE IF EXISTS "Resource";
 CREATE TABLE "Resource" (
   Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
   Name VARCHAR NOT NULL UNIQUE,
-  Price REAL NOT NULL 
-);
-INSERT INTO "Resource" VALUES(15,'Аммиак, кг', 10.0);
-INSERT INTO "Resource" VALUES(4,'Вода, м^3', 10.0);
-INSERT INTO "Resource" VALUES(8,'Деэмульгатор, кг', 10.0);
-INSERT INTO "Resource" VALUES(14,'Диэтиленгликоль, кг', 10.0);
-INSERT INTO "Resource" VALUES(9,'Известь комовая кальценированая негашённая, кг', 10.0);
-INSERT INTO "Resource" VALUES(12,'Инертный газ, кг', 10.0);
-INSERT INTO "Resource" VALUES(11,'Катализатор АП-64, кг', 10.0);
-INSERT INTO "Resource" VALUES(10,'Катализатор, кг', 10.0);
-INSERT INTO "Resource" VALUES(13,'Моноэтаноламин, кг', 10.0);
-INSERT INTO "Resource" VALUES(1,'Нефть, т', 10.0);
-INSERT INTO "Resource" VALUES(3,'Пар, Гкал', 10.0);
-INSERT INTO "Resource" VALUES(6,'Сжатый воздух, м^3', 10.0);
-INSERT INTO "Resource" VALUES(2,'Сода каустическая, кг', 10.0);
-INSERT INTO "Resource" VALUES(7,'Топливо, кг', 10.0);
-INSERT INTO "Resource" VALUES(5,'Электроэнергия, кВт*ч', 10.0);
-DROP TABLE IF EXISTS "ResourceNumber";
-CREATE TABLE ResourceNumber (
-  ResourceID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+  Price REAL NOT NULL,
   TotalNumber REAL NOT NULL,
-  Deviation REAL NOT NULL,
-  FOREIGN KEY (ResourceID) REFERENCES "Resource"(Id)
-    ON UPDATE CASCADE
-    ON DELETE RESTRICT
+  Deviation REAL NOT NULL
 );
-INSERT INTO "ResourceNumber" VALUES(15, 1,0.1);/*'Аммиак, кг');*/
-INSERT INTO "ResourceNumber" VALUES(4,30000,3000);/*'Вода, м^3');*/
-INSERT INTO "ResourceNumber" VALUES(8,1,0.1);/*'Деэмульгатор, кг');*/
-INSERT INTO "ResourceNumber" VALUES(14,1,0.1);/*'Диэтиленгликоль, кг');*/
-INSERT INTO "ResourceNumber" VALUES(9,1,0.1);/*'Известь комовая кальценированая негашённая, кг');*/
-INSERT INTO "ResourceNumber" VALUES(12,4,0.4);/*'Инертный газ, кг');*/
-INSERT INTO "ResourceNumber" VALUES(11,0.1,0.01);/*'Катализатор АП-64, кг');*/
-INSERT INTO "ResourceNumber" VALUES(10,1,0.1);/*'Катализатор, кг');*/
-INSERT INTO "ResourceNumber" VALUES(13,0.1,0.01);/*'Моноэтаноламин, кг');*/
-INSERT INTO "ResourceNumber" VALUES(1,17,1.7);/*'Нефть, т');*/
-INSERT INTO "ResourceNumber" VALUES(3,1,0.1);/*'Пар, Гкал');*/
-INSERT INTO "ResourceNumber" VALUES(6,100,10);/*'Сжатый воздух, м^3');*/
-INSERT INTO "ResourceNumber" VALUES(2,1,0.1);/*'Сода каустическая, кг');*/
-INSERT INTO "ResourceNumber" VALUES(7,600,60);/*'Топливо, кг');*/
-INSERT INTO "ResourceNumber" VALUES(5,200,20);/*'Электроэнергия, кВт*ч');*/
-
+INSERT INTO "Resource" VALUES(15,'Аммиак, кг', 10.0, 1,0.1);
+INSERT INTO "Resource" VALUES(4,'Вода, м^3', 10.0,30000,3000);
+INSERT INTO "Resource" VALUES(8,'Деэмульгатор, кг', 10.0,1,0.1);
+INSERT INTO "Resource" VALUES(14,'Диэтиленгликоль, кг', 10.0,1,0.1);
+INSERT INTO "Resource" VALUES(9,'Известь комовая кальценированая негашённая, кг', 10.0,1,0.1);
+INSERT INTO "Resource" VALUES(12,'Инертный газ, кг', 10.0,4,0.4);
+INSERT INTO "Resource" VALUES(11,'Катализатор АП-64, кг', 10.0,0.1,0.01);
+INSERT INTO "Resource" VALUES(10,'Катализатор, кг', 10.0,1,0.1);
+INSERT INTO "Resource" VALUES(13,'Моноэтаноламин, кг', 10.0,0.1,0.01);
+INSERT INTO "Resource" VALUES(1,'Нефть, т', 10.0,17,1.7);
+INSERT INTO "Resource" VALUES(3,'Пар, Гкал', 10.0,1,0.1);
+INSERT INTO "Resource" VALUES(6,'Сжатый воздух, м^3', 10.0,100,10);
+INSERT INTO "Resource" VALUES(2,'Сода каустическая, кг', 10.0,1,0.1);
+INSERT INTO "Resource" VALUES(7,'Топливо, кг', 10.0,600,60);
+INSERT INTO "Resource" VALUES(5,'Электроэнергия, кВт*ч', 10.0,200,20);
 DROP TABLE IF EXISTS "Tool";
 CREATE TABLE Tool (
   Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
