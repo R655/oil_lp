@@ -18,7 +18,7 @@ import java.math.BigDecimal;
 
 @DatabaseTable
 public class GoodFromTool {
-    @DatabaseField(columnName = "ToolId", canBeNull = false)
+    @DatabaseField(columnName = "ToolId", canBeNull = false, dataType = DataType.INTEGER)
     private int toolId;
     @DatabaseField(columnName = "ToolId", foreign = true, canBeNull = false)
     private Tool tool;

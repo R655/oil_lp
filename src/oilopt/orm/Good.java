@@ -20,9 +20,9 @@ import java.math.BigDecimal;
 
 @DatabaseTable
 public class Good {
-    @DatabaseField(generatedId = true, columnName = "Id")
+    @DatabaseField(generatedId = true, columnName = "Id", dataType = DataType.INTEGER)
     private int id;
-    @DatabaseField(columnName = "Name", canBeNull = false)
+    @DatabaseField(columnName = "Name", canBeNull = false, dataType = DataType.STRING)
     private String name;
     @DatabaseField(columnName = "Price", canBeNull = false, dataType = DataType.BIG_DECIMAL)
     private BigDecimal price;

@@ -7,6 +7,7 @@
 package oilopt.orm;
 
 import com.j256.ormlite.dao.ForeignCollection;
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
@@ -18,13 +19,13 @@ import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable
 public class Tool {
-    @DatabaseField(generatedId = true, columnName = "Id")
+    @DatabaseField(generatedId = true, columnName = "Id", dataType = DataType.INTEGER)
     private int id;
-    @DatabaseField(columnName = "Name", unique = true, canBeNull = false)
+    @DatabaseField(columnName = "Name", unique = true, canBeNull = false, dataType = DataType.STRING)
     private String name;
-    @DatabaseField(columnName = "Abbreviation")
+    @DatabaseField(columnName = "Abbreviation", dataType = DataType.STRING)
     private String abbreviation;
-    @DatabaseField(columnName = "Power", canBeNull = false)
+    @DatabaseField(columnName = "Power", canBeNull = false, dataType = DataType.INTEGER)
     private int power;
     
     @ForeignCollectionField(foreignFieldName = "tool", columnName = "ToodId")
