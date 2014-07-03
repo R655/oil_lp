@@ -19,8 +19,8 @@ import org.apache.commons.lang.ArrayUtils;
 public class ProblemSolver
 {
     
-    private ProblemConditions conditions = null;
-    private ProblemData problemData = null;
+    public ProblemConditions conditions = null;
+    public ProblemData problemData = null;
     // private DataManager deprecatedOilData = null;
     
     public ProblemSolver(String dbName, String qName) throws SQLException, ClassNotFoundException, FileNotFoundException, IOException

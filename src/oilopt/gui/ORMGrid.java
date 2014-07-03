@@ -26,27 +26,27 @@ public class ORMGrid extends javax.swing.JFrame
 {
     static Map<String, String> readableNames  = new HashMap<String, String>()
     {{
-        put("Good", "Продукт");
-        put("GoodFromTool", "Полученный продукт");
-        put("NeedGoodForTool", "Расходуемый продукт");
-        put("NeedResourceForTool", "Расходуемый ресурс");
-        put("Resource", "Ресурс");
-        put("Tool", "Технология");
-        put("Id", "Ид");
-        put("Name", "Название");
-        put("Price", "Цена");
-        put("GoodId", "Идентификатор продукта");
-        put("ToolId", "Идентификатор технологии");
-        put("ResourceId", "Идентификатор ресурса");
-        put("ReceiveNumber", "Полученное количество");
-        put("RequestNumber", "Требуемое количество");
-        put("TotalNumber", "Максимальное количество");
-        put("Deviation", "Дисперсия");
-        put("Abbreviation", "Аббревиатура");
-        put("Power", "Максимальная мощность");
+        put("good", "Продукт");
+        put("goodFromTool", "Полученный продукт");
+        put("needGoodForTool", "Расходуемый продукт");
+        put("needResourceForTool", "Расходуемый ресурс");
+        put("resource", "Ресурс");
+        put("tool", "Технология");
+        put("id", "Ид");
+        put("name", "Название");
+        put("price", "Цена");
+        put("goodId", "Идентификатор продукта");
+        put("toolId", "Идентификатор технологии");
+        put("resourceId", "Идентификатор ресурса");
+        put("receiveNumber", "Полученное количество");
+        put("requestNumber", "Требуемое количество");
+        put("totalNumber", "Максимальное количество");
+        put("deviation", "Дисперсия");
+        put("abbreviation", "Аббревиатура");
+        put("power", "Максимальная мощность");
     }};
     
-    public ORMGrid(Class<?> ormClass) throws Exception
+    public ORMGrid(Class<?> ormClass, Object[] objs) throws Exception
     {
         
         if(!ormClass.isAnnotationPresent(DatabaseTable.class))
@@ -54,9 +54,11 @@ public class ORMGrid extends javax.swing.JFrame
         
         JFrame form = new JFrame();
         
-        Field[] fields = ormClass.getFields();
-        List<String> readableFieldsNames = new LinkedList<>();
-        List<Class> fieldsTypes = new LinkedList<>();
+        Field[] fields = ormClass.getDeclaredFields();
+        final List<String> readableFieldsNames = new LinkedList<>();
+        final List<Class> fieldsTypes = new LinkedList<>();
+        final List<Field> originalFieldNames = new LinkedList<>();
+        
         
         for(Field field: fields)
         {
@@ -65,6 +67,7 @@ public class ORMGrid extends javax.swing.JFrame
                 DatabaseField fieldParams = field.getAnnotation(DatabaseField.class);
                 if(!fieldParams.foreign())
                 {
+                    originalFieldNames.add(field);
                     if(readableNames.containsKey(field.getName()))
                         readableFieldsNames.add(readableNames.get(field.getName()));
                     else
@@ -93,28 +96,41 @@ public class ORMGrid extends javax.swing.JFrame
             }
         }
         
+        
+        Object[][] elems = new Object[objs.length][originalFieldNames.size()];
+        int i = 0;
+        for(Object obj: objs)
+        {
+            int j = 0;
+            //elems[i] = new Object[originalFieldNames.size()];
+            for(Field field: originalFieldNames)
+            {
+                
+                elems[i][j] = obj.getClass().getMethod("get"+field.getName().substring(0, 1).toUpperCase() + field.getName().substring(1)).invoke(obj);
+                ++j;
+            }
+            ++i;
+        }
+        
         initComponents();
         
         
-        JTable ormtable = new JTable();
+        //ormtable = new JTable();
 
-        ormtable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                
-            },
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            elems,
             readableFieldsNames.toArray()
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Boolean.class
-            };
+        ) /*{
+            final Class[] types = fieldsTypes.toArray();
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
-        });
+        }*/);
         
     }
 
+    //JTable ormtable;
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -129,22 +145,6 @@ public class ORMGrid extends javax.swing.JFrame
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Id", "Name", "Count", "Lalka"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Boolean.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
         jScrollPane1.setViewportView(jTable1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -170,34 +170,18 @@ public class ORMGrid extends javax.swing.JFrame
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ORMGrid.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ORMGrid.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ORMGrid.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ORMGrid.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
+    public static void start(final Class<?> ormClass, final Object[][] objs) {
+       
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ORMGrid().setVisible(true);
+            final public void run() {
+                try{
+                    new ORMGrid(ormClass, objs).setVisible(true);
+                }
+                catch(Exception ex)
+                {
+                    ;
+                }
             }
         });
     }

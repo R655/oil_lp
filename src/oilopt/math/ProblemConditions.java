@@ -438,8 +438,8 @@ public class ProblemConditions
             {
                 int i = db.resourceIndexById.get(currentResource.getId());
 
-                resourceNumberDeviation[i] = currentResource.getNumberDeviation();
-                resourceNumber[i] = currentResource.getNumber();
+                resourceNumberDeviation[i] = currentResource.getDeviation();
+                resourceNumber[i] = currentResource.getTotalNumber();
 
                 nrftsm[i] = new double[getDim()];
                 nrftsD[i] = new double[getDim()];

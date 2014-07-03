@@ -46,11 +46,38 @@ public class OilOpt {
             /**
              * Запилить запуск с гуями
              */
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+            
            
             oilopt.gui.MainWindow window = new oilopt.gui.MainWindow();
             window.setVisible(true);
-
+            
             solver = new ProblemSolver(dbName, qName);
+            
+            
+            oilopt.gui.ORMGrid goodGrid 
+                    = new oilopt.gui.ORMGrid(
+                        oilopt.orm.Good.class, 
+                        (Object[])solver.problemData.goods.toArray());
+            goodGrid.setVisible(true);
+            
+            oilopt.gui.ORMGrid resourceGrid
+                    = new oilopt.gui.ORMGrid(
+                        oilopt.orm.Resource.class, 
+                        (Object[])solver.problemData.resources.toArray());
+            resourceGrid.setVisible(true);
+            
+            oilopt.gui.ORMGrid toolGrid
+                    = new oilopt.gui.ORMGrid(
+                        oilopt.orm.Tool.class, 
+                        (Object[])solver.problemData.tools.toArray());
+            toolGrid.setVisible(true);
+            
         }
         else
         {

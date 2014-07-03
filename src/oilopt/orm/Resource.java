@@ -35,12 +35,12 @@ public class Resource {
     @ForeignCollectionField(foreignFieldName = "resource", columnName = "ResourceId")
     private ForeignCollection<NeedResourceForTool> needResourceForTool;
     
-    public double getNumber()
+    public double getTotalNumber()
     {
         return totalNumber;
     }
     
-    public double getNumberDeviation()
+    public double getDeviation()
     {
         return deviation;
     }

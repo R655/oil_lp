@@ -39,7 +39,7 @@ public class OutputModel
         this.db = db;
         alpha = -1.0;
         showAlpha = false;
- 
+        
         
         _convertResult(false, sol, conds, 0.0);
     }
@@ -277,7 +277,7 @@ public class OutputModel
         {
             int i = db.getResourceIndex(r.getId());
 
-            double limit = r.getNumber();
+            double limit = r.getTotalNumber();
             double used = resNeed[i];
 
             double purchased = 0;
